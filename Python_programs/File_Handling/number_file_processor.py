@@ -7,5 +7,5 @@ def generate_numbers(n, filename):
                 file.write(str(a) + '\n')
             file.close()
     except Exception as e:
-        print("Błąd", e)
+        print("Error", e)
 generate_numbers(100, "test.txt")

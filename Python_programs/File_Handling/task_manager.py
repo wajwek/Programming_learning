@@ -1,164 +1,163 @@
 import pickle
 import shelve
 
-CONFIG_PLIK = "conf" 
+CONFIG_FILE = "conf" 
 tasks = {}
 
-def wczytaj_konfiguracje():
-    domyslna = {
+def load_configuration():
+    default = {
         "data_file": "tasks.pkl",
         "autosave": True
     }
 
     try:
-        with shelve.open(CONFIG_PLIK) as plik:
-            if "config" not in plik:
-                plik["config"] = domyslna
-            config = plik["config"]
+        with shelve.open(CONFIG_FILE) as file:
+            if "config" not in file:
+                file["config"] = default
+            config = file["config"]
             
             if "data_file" not in config:
-                config["data_file"] = domyslna["data_file"]
+                config["data_file"] = default["data_file"]
             if "autosave" not in config:
-                config["autosave"] = domyslna["autosave"]
+                config["autosave"] = default["autosave"]
 
-            plik["config"] = config
+            file["config"] = config
             return config
     except Exception as e:
-        print("Błąd ->", e, "Ustawiam domyślną")
-        return domyslna
+        print("Error ->", e, "Setting default configuration")
+        return default
 
-def zapisz_konfiguracje(config):
+def save_configuration(config):
     try:
-        with shelve.open(CONFIG_PLIK) as plik:
-            plik["config"] = config
-        print("Konfiguracja zapisana.")
+        with shelve.open(CONFIG_FILE) as file:
+            file["config"] = config
+        print("Configuration saved.")
     except Exception:
-        print("Nie udało się zapisać konfiguracji.")
+        print("Failed to save configuration.")
 
-def wczytaj_stan(plik):
+def load_state(file_path):
     global tasks
     try:
-        with open(plik, 'rb') as f:
-            dane = pickle.load(f)
-            if isinstance(dane, dict):
-                tasks = dane
+        with open(file_path, 'rb') as f:
+            data = pickle.load(f)
+            if isinstance(data, dict):
+                tasks = data
             else:
-                print("Plik stanu ma zły format. Ustawiam pustą listę")
-            tasks = {}
+                print("State file has invalid format. Setting empty list")
+                tasks = {}
     except FileNotFoundError:
-        print("Brak pliku z zapisanym stanem.")
+        print("State file not found.")
         tasks = {}
     except (pickle.UnpicklingError, EOFError):
-        print("Plik pickle jest uszkodzony.")
+        print("Pickle file is corrupted.")
         tasks = {}
     except Exception as e:
-        print("Błąd ->", e, "Ustawiam pustą listę")
+        print("Error ->", e, "Setting empty list")
         tasks = {}
 
-def zapisz_stan(plik):
+def save_state(file_path):
     try:
-        with open(plik, 'wb') as f:
+        with open(file_path, 'wb') as f:
             pickle.dump(tasks, f)
-        print("Zapisano.")
+        print("Saved.")
     except Exception as e:
-        print("Nie udało się zapisać stanu ->", e)
+        print("Failed to save state ->", e)
 
-def wyswietl():
-    print("\n--- Lista ---")
-    for kategoria, lista in tasks.items():
-        print(f"Kategoria: {kategoria}")
-        for i, zadanie in enumerate(lista):
-            opis = zadanie[0]
-            status = zadanie[1]
-            znaczek = "[x]" if status else "[ ]"
-            print(f"  {i}. {znaczek} {opis}")
-    print("-------------")
+def display():
+    print("\n--- Task List ---")
+    for category, task_list in tasks.items():
+        print(f"Category: {category}")
+        for i, task in enumerate(task_list):
+            description = task[0]
+            status = task[1]
+            mark = "[x]" if status else "[ ]"
+            print(f"  {i}. {mark} {description}")
+    print("-----------------")
 
-def dodaj(plik):
-    kategoria = input("Podaj kategorię: ").strip()
-    opis = input("Treść zadania: ").strip()
+def add_task(file_path):
+    category = input("Enter category: ").strip()
+    description = input("Task description: ").strip()
 
-    if not kategoria:
-        print("Kategoria nie może być pusta.")
+    if not category:
+        print("Category cannot be empty.")
         return
-    if not opis:
-        print("Treść zadania nie może być pusta.")
+    if not description:
+        print("Task description cannot be empty.")
         return
 
-    if kategoria not in tasks:
-        tasks[kategoria] = []
+    if category not in tasks:
+        tasks[category] = []
 
-    tasks[kategoria].append((opis, False))
-    zapisz_stan(plik)
+    tasks[category].append((description, False))
+    save_state(file_path)
 
-def oznacz_wykonane(plik):
-    kategoria = input("Podaj kategorię: ").strip()
+def mark_completed(file_path):
+    category = input("Enter category: ").strip()
 
-    if kategoria in tasks:
-        numer = input("Podaj numer zadania (od 0): ").strip()
+    if category in tasks:
+        number = input("Enter task number (from 0): ").strip()
         try:
-            numer = int(numer)
+            number = int(number)
         except ValueError:
-            print("Złe wejście: numer musi być liczbą.")
+            print("Invalid input: number must be an integer.")
             return
 
-        lista_zadan = tasks[kategoria]
-        if 0 <= numer < len(lista_zadan):
-            stary_opis = lista_zadan[numer][0]
-            lista_zadan[numer] = (stary_opis, True)
-            zapisz_stan(plik)
+        task_list = tasks[category]
+        if 0 <= number < len(task_list):
+            old_description = task_list[number][0]
+            task_list[number] = (old_description, True)
+            save_state(file_path)
         else:
-            print("Zły numer zadania.")
+            print("Invalid task number.")
     else:
-        print("Nie ma takiej kategorii.")
+        print("Category does not exist.")
 
-def ustawienia(config):
+def settings(config):
     while True:
-        print("\n--- Ustawienia ---")
-        print(f"1 - Zmień plik danych (teraz: {config['data_file']})")
-        print(f"2 - Przełącz autosave (teraz: {config['autosave']})")
-        print("3 - Powrót")
-        wybor = input("Wpisz opcje -> ").strip()
+        print("\n--- Settings ---")
+        print(f"1 - Change data file (current: {config['data_file']})")
+        print(f"2 - Toggle autosave (current: {config['autosave']})")
+        print("3 - Back")
+        choice = input("Enter option -> ").strip()
 
-        if wybor == "1":
-            nowy = input("Podaj nową nazwę pliku: ").strip()
-            if not nowy:
-                print("Nazwa nie może być pusta.")
+        if choice == "1":
+            new_file = input("Enter new file name: ").strip()
+            if not new_file:
+                print("Name cannot be empty.")
             else:
-                config["data_file"] = nowy
-                zapisz_konfiguracje(config)
-                print("Uruchom ponownie")
-        elif wybor == "2":
+                config["data_file"] = new_file
+                save_configuration(config)
+                print("Please restart the application")
+        elif choice == "2":
             config["autosave"] = not config["autosave"]
-            zapisz_konfiguracje(config)
-        elif wybor == "3":
+            save_configuration(config)
+        elif choice == "3":
             break
         else:
-            print("Nieznana opcja.")
+            print("Unknown option.")
 
-config = wczytaj_konfiguracje()
-PLIK = config["data_file"]
+config = load_configuration()
+FILE_PATH = config["data_file"]
 
-wczytaj_stan(PLIK)
+load_state(FILE_PATH)
 
 while True:
-    print("\n 1 - Wyświetl, 2 - Dodaj, 3 - Wykonane, 4 - Ustawienia, 5 - Exit")
-    wybor = input("Wpisz opcje -> ").strip()
+    print("\n 1 - Display, 2 - Add, 3 - Complete, 4 - Settings, 5 - Exit")
+    choice = input("Enter option -> ").strip()
 
-    if wybor == '1':
-        wyswietl()
-    elif wybor == '2':
-        dodaj(PLIK)
-    elif wybor == '3':
-        oznacz_wykonane(PLIK)
-    elif wybor == '4':
-        ustawienia(config)
-        PLIK = config["data_file"]
-    elif wybor == '5':
+    if choice == '1':
+        display()
+    elif choice == '2':
+        add_task(FILE_PATH)
+    elif choice == '3':
+        mark_completed(FILE_PATH)
+    elif choice == '4':
+        settings(config)
+        FILE_PATH = config["data_file"]
+    elif choice == '5':
         if config.get("autosave", True):
-            zapisz_stan(PLIK)
-        print("Dobrego dnia!")
+            save_state(FILE_PATH)
+        print("Have a nice day!")
         break
     else:
-        print("Nieznana opcja.")
-
+        print("Unknown option.")

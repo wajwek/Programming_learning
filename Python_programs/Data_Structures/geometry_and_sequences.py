@@ -1,5 +1,5 @@
-def zad_1(tab):
-    wynik = []
+def find_increasing_subsequences(tab):
+    result = []
     tmp = []
     for i in range(1, len(tab)):
         if tab[i - 1] < tab[i]:
@@ -7,11 +7,11 @@ def zad_1(tab):
         else:
             if len(tmp) + 1 > 1:
                 tmp.append(tab[i - 1])
-                wynik.append(tuple(tmp))
+                result.append(tuple(tmp))
             tmp = []
     if len(tmp) + 1 > 1:
             tmp.append(tab[len(tab) - 1])
-            wynik.append(tuple(tmp))
-    return wynik
-print(zad_1([1, 1, 1, 2, 66, 77]))
+            result.append(tuple(tmp))
+    return result
 
+print(find_increasing_subsequences([1, 1, 1, 2, 66, 77]))

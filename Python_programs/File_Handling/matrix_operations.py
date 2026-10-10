@@ -1,70 +1,70 @@
-def wczytaj_dane(sciezka):
+def load_data(path):
     try:
-        with open(sciezka, 'r') as f:
-            tresc = f.read().split()
-            n = int(tresc[0])
-            macierz_a = []
-            macierz_b = []
-            licznik = 1
+        with open(path, 'r') as f:
+            content = f.read().split()
+            n = int(content[0])
+            matrix_a = []
+            matrix_b = []
+            counter = 1
             for x in range(2):
-                macierz = []
+                matrix = []
                 for i in range(n):
-                    wiersz = []
+                    row = []
                     for j in range(n):
-                        wiersz.append(int(tresc[licznik]))
-                        licznik += 1
-                    macierz.append(wiersz)
+                        row.append(int(content[counter]))
+                        counter += 1
+                    matrix.append(row)
                 if x == 0:
-                    macierz_a = macierz
+                    matrix_a = matrix
                 else:
-                    macierz_b = macierz
-        return n, macierz_a, macierz_b
+                    matrix_b = matrix
+        return n, matrix_a, matrix_b
     except FileNotFoundError:
         return None, None, None
     
-def dodawanie(A, B, n):
+def add_matrices(A, B, n):
     C = []
     for i in range(n):
-        wiersz = []
+        row = []
         for j in range(n):
-            suma = A[i][j] + B[i][j]
-            wiersz.append(suma)
-        C.append(wiersz)
+            total = A[i][j] + B[i][j]
+            row.append(total)
+        C.append(row)
     return C
 
-def mnozenie(A, B, n):
-    C = [[0]*n for x in range(n)] # [[0] *n]*n nie działa, bo python dodaje referencje w pamięci na odpowiadających pozycjach :(
+def multiply_matrices(A, B, n):
+    C = [[0]*n for x in range(n)]
     for i in range(n):
         for j in range(n):
             for k in range(n):
                 C[i][j] += A[i][k] * B[k][j]
     return C
 
-def zapisz_macierz(plik, macierz, komunikat):
-    with open(plik, 'a') as plik:
-        wszystkie_liczby = [str(x) for wiersz in macierz for x in wiersz]
-        szerokosc = len(max(wszystkie_liczby, key=len)) + 1 
-        plik.write(f"--------------- {komunikat} ----------------\n")
-        for wiersz in macierz:
-            linia = ""
-            for liczba in wiersz:
-                linia += f"{liczba:>{szerokosc}}"
-            plik.write(linia + "\n")
+def save_matrix(file_path, matrix, message):
+    with open(file_path, 'a') as file:
+        all_numbers = [str(x) for row in matrix for x in row]
+        width = len(max(all_numbers, key=len)) + 1 
+        file.write(f"--------------- {message} ----------------\n")
+        for row in matrix:
+            line = ""
+            for number in row:
+                line += f"{number:>{width}}"
+            file.write(line + "\n")
+    file.close()
+
+def process_matrices(input_file, output_file):
+    data = load_data(input_file)
+    n, A, B = data
+
+    sum_matrix = add_matrices(A, B, n)
+    product_matrix = multiply_matrices(A, B, n)
+
+    with open(output_file, 'w') as f:
+        save_matrix("result.txt", A, "Matrix A")
+        save_matrix("result.txt", B, "Matrix B")
+        save_matrix("result.txt", sum_matrix, "Sum A+B")
+        save_matrix("result.txt", product_matrix, "Product A*B")
+
+with open("result.txt", 'w') as plik:
     plik.close()
-
-def przetworz_macierze(plik_wejsciowy, plik_wyjsciowy):
-    dane = wczytaj_dane(plik_wejsciowy)
-    n, A, B = dane
-
-    suma = dodawanie(A, B, n)
-    iloczyn = mnozenie(A, B, n)
-
-    with open(plik_wyjsciowy, 'w') as f:
-        zapisz_macierz("wynik.txt", A, "Macierz A")
-        zapisz_macierz("wynik.txt", B, "Macierz B")
-        zapisz_macierz("wynik.txt", suma, "Suma A+B")
-        zapisz_macierz("wynik.txt", iloczyn, "Iloczyn A*B")
-
-with open("wynik.txt", 'w') as plik:
-    plik.close()
-przetworz_macierze('dane.txt', 'wynik.txt')
+process_matrices('data.txt', 'result.txt')

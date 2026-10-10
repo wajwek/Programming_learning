@@ -8,10 +8,8 @@ def load_data_pickle(filename):
     with open(filename, 'rb') as file:
         return pickle.load(file)
 
-data = {"imie": "Maciej", "lista": [1, 2, 3]}
-save_data_pickle(data, "dane.pkl")
+data = {"name": "Maciej", "list": [1, 2, 3]}
+save_data_pickle(data, "data.pkl")
 
-wczytane = load_data_pickle("dane.pkl")
-print(wczytane)
-
-        
+loaded_data = load_data_pickle("data.pkl")
+print(loaded_data)
