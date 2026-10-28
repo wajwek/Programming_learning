@@ -1,0 +1,224 @@
+/* =================================================================== */
+/* auth.css - Minimalne style dla logowania i paska sesji (Lab 03)     */
+/* =================================================================== */
+
+:root {
+  --auth-bg: var(--card-bg, #ffffff);
+  --auth-text: var(--text, #222222);
+  --auth-border: var(--border, #cccccc);
+  --auth-primary: var(--surface-text, #E8DCC4);
+  --auth-login-light: var(--dark, #123F36);
+  --auth-login-dark: var(--surface-text, #E8DCC4);
+}
+
+body.dark {
+  --auth-bg: #2E1C12;
+  --auth-text: var(--text, #f5f5f5);
+  --auth-border: var(--border, #634434);
+  --auth-primary: var(--sea-color, #f5f5f5);
+  --auth-login-light: #2E1C12;
+  --auth-login-dark: #2E1C12;
+}
+
+/* Pasek tożsamości w nawigacji */
+.user-session, .user-info { display: flex; align-items: center; gap: 0.5rem; }
+.user-session {
+  position: relative;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.api-status {
+  position: absolute;
+  top: calc(100% + 1rem);
+  right: 0;
+  width: max-content;
+  max-width: min(32rem, 90vw);
+  margin: 0;
+  color: #9B2C2C;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  white-space: normal;
+}
+body.dark .api-status {
+  color: #ffb4ab;
+}
+.user-session strong {
+  color: var(--surface-text);
+  font-weight: 600;
+}
+.user-info > span {
+  margin-right: 0.5rem;
+  color: var(--surface-text);
+}
+.user-session button {
+  margin: 0;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--auth-primary);
+  background: transparent;
+  color: var(--auth-primary);
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+.user-session {
+  align-items: center;
+}
+.user-session #loginBtn {
+  background: var(--auth-login-light);
+  color: var(--surface-text);
+}
+.user-session #loginBtn:hover {
+  background: var(--auth-login-dark);
+  border-color: var(--auth-login-dark);
+  color: var(--dark);
+  outline: none;
+  box-shadow: none;
+}
+body.dark .user-session #loginBtn {
+  background: var(--auth-login-dark);
+  border-color: var(--surface-text);
+}
+body.dark .user-session #loginBtn:hover {
+  background: var(--surface-text);
+  border-color: var(--surface-text);
+  color: var(--navbar-bg);
+}
+body.dark .user-session #logoutBtn {
+  background: var(--auth-login-dark);
+  border-color: var(--auth-login-dark);
+  color: #ffffff;
+}
+body.dark .user-session #logoutBtn:hover {
+  background: var(--surface-text);
+  border-color: var(--surface-text);
+  color: var(--navbar-bg);
+}
+.user-session #logoutBtn:hover {
+  background: var(--auth-login-dark);
+  border-color: var(--auth-login-dark);
+  color: var(--dark);
+}
+.user-session #logoutBtn {
+  background: var(--auth-login-light);
+  border-color: var(--auth-login-light);
+  color: var(--surface-text);
+}
+.hidden { display: none !important; }
+
+/* Okno modalne logowania */
+.auth-dialog {
+  width: 90%;
+  max-width: 340px;
+  border-radius: 8px;
+  border: 1px solid var(--auth-border);
+  background-color: var(--auth-bg);
+  color: var(--auth-text);
+  padding: 1.25rem;
+  font-family: inherit;
+}
+
+.auth-header { display: flex; justify-content: space-between; align-items: center; }
+.auth-header h3 { margin: 0; }
+.btn-close {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--auth-text);
+  cursor: pointer;
+}
+.auth-dialog .btn-close:hover {
+  background: transparent;
+  color: var(--auth-text);
+  outline: none;
+}
+.auth-dialog .btn-close:focus-visible {
+  background: transparent;
+  color: var(--auth-text);
+  outline: 2px solid var(--auth-primary);
+  outline-offset: 2px;
+}
+
+/* Komunikaty i pola formularza */
+.auth-message { color: #d32f2f; font-size: 0.85rem; margin: 0.5rem 0; }
+.auth-message.success { color: #2e7d32; }
+.error-field { border-color: #d32f2f !important; }
+
+.auth-dialog label { display: block; font-size: 0.85rem; margin: 0.5rem 0 0.2rem; }
+.auth-dialog input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--auth-border);
+  border-radius: 4px;
+  background-color: var(--auth-bg);
+  color: var(--auth-text);
+}
+
+/* Przyciski i akcje */
+.form-actions { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+.form-actions button[type="submit"] {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--auth-login-light);
+  background-color: var(--auth-bg);
+  color: var(--auth-login-light);
+  font-weight: 600;
+  cursor: pointer;
+}
+.auth-dialog .form-actions button[type="submit"]:hover {
+  background-color: var(--dark);
+  color: var(--surface-text);
+  border-color: var(--dark);
+  outline: none;
+  box-shadow: none;
+}
+.auth-dialog .form-actions button[type="submit"]:focus-visible {
+  background-color: var(--dark);
+  color: var(--surface-text);
+  border-color: var(--dark);
+  outline: 2px solid var(--auth-primary);
+  outline-offset: 2px;
+}
+body.dark .auth-dialog .form-actions button[type="submit"] {
+  background-color: var(--auth-login-dark);
+  border-color: var(--surface-text);
+  color: var(--surface-text);
+}
+body.dark .auth-dialog .form-actions button[type="submit"]:hover,
+body.dark .auth-dialog .form-actions button[type="submit"]:focus-visible {
+  background-color: var(--surface-text);
+  color: var(--navbar-bg);
+  border-color: var(--surface-text);
+}
+.btn-link {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--auth-login-light);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.85rem;
+}
+.auth-dialog .btn-link:hover {
+  background: transparent;
+  color: var(--auth-login-light);
+  outline: none;
+}
+.auth-dialog .btn-link:focus-visible {
+  background: transparent;
+  color: var(--auth-login-light);
+  outline: 2px solid var(--auth-primary);
+  outline-offset: 2px;
+}
+body.dark .auth-dialog .btn-link,
+body.dark .auth-dialog .btn-link:hover,
+body.dark .auth-dialog .btn-link:focus-visible {
+  color: var(--surface-text);
+}

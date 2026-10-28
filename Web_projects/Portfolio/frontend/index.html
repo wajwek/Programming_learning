@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--poprawne wyświetlanie na różnych urządzeniach-->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"> <!--favicon, link do zew. zasobu-->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth.css">
+  <title>Maciej Wrzesiński | Portfolio</title>
+</head>
+<body>
+  <header class="site-header"> <!--nadaje klasę CSS-->
+    <nav class="navbar" aria-label="Główna nawigacja"> <!--aria-label nadaje opis dla czytników-->
+      <div class="identity-group">
+        <a class="identity" href="#top">MW</a> <!--# prowadzi do stosownego id= , 'a' to odnośnik-->
+        <button class="theme-toggle" id="theme-toggle" type="button" role="switch" aria-checked="false"
+          aria-label="Przełącz motyw kolorystyczny">
+          <span class="theme-toggle-thumb" aria-hidden="true"></span>
+        </button>
+      </div>
+      <ul class="nav-links"> <!-- nieuporządkowana lista -->
+        <li><a href="#o-mnie">O mnie</a></li> <!--pojedynczny element listy-->
+        <li><a href="#projekty">Projekty</a></li>
+        <li><a href="#linki">Linki</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <div id="userSession" class="user-session">
+        <button id="loginBtn" type="button">Zaloguj się</button>
+        <div id="userInfo" class="user-info hidden">
+          <span>Zalogowany: <strong id="loggedUsername">--</strong></span>
+          <button id="logoutBtn" type="button">Wyloguj</button>
+        </div>
+        <p id="api-status" class="api-status hidden" role="alert" aria-live="polite"></p>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero"> <!-- sekcja -->
+      <p class="eyebrow">Portfolio</p> <!--'p' to akapit/tekst-->
+      <h1>Maciej Wrzesiński</h1>
+      <p>Student cyberbezpieczeństwa na AGH</p>
+    </section>
+
+    <section id="o-mnie" class="about section">
+      <div> <!-- kontener blokowy -->
+        <p class="eyebrow">Kilka słów o mnie</p>
+        <h2>O mnie</h2>
+        <p>
+          Jestem studentem 2 roku cyberbezpieczeństwa na AGH. Interesują mnie zagadnienia z zakresu sieci teleinformatycznych, 
+          bezpiecznego projektowania aplikacji i stron internetowych, administrowanie systemami IT, informatyka śledcza oraz ciekawostki ze świata cyber.
+          Dodatkowo chętnie pogłębiam swoją wiedzę w zakresie Sztucznej Inteligencji i coraz to nowszych jej zastosowaniań/implementacji. 
+          Pomijając techniczny świat, lubię grać w gry FPS i RPG, chodzić na długie spacery, spędzać czas z najbliższymi, jak i bawić się z moimi ukochanymi psami.
+        </p>
+      </div>
+      <figure class="profile-photo"> <!-- samodzielny element treści np. zdj, wykres -->
+        <img src="assets/autor.jpg" alt="Zdjęcie profilowe Macieja Wrzesińskiego"> <!-- tekst pojawia sie gdy obraz sie nie zaladuje lub ktoś korzysta z czytnika-->
+        <figcaption>Maciej Wrzesiński</figcaption> <!-- podpis elementu-->
+      </figure>
+    </section>
+
+    <section id="projekty" class="section">
+      <p class="eyebrow">Co robię</p>
+      <h2>Projekty i zainteresowania</h2>
+      <div class="project-grid">
+        <a class="project-card" href="https://github.com/wajwek/Hallucination_detector" target="_blank" rel="noopener noreferrer"> 
+          <!-- _blank otwiera odnośnik w nowej karcie, 
+          noopener blokuje dostęp do window.opener, 
+          a noreferrer ogranicza informacje o stronie z której nastąpiło przejście-->
+          <svg class="project-icon" viewBox="0 0 24 24" aria-hidden="true"> <!-- svg służy do tworzenia grafiki wektorowej bezpośrednio w html, viewBox ustala układ wsp, czytniki pomijają-->
+            <rect x="7" y="7" width="10" height="10" rx="1.5"/> <!-- rysyje prostokąt, zaokrąglenie narożników-->
+            <path d="M10 10h4v4h-4zM4 9h3m-3 3h3m-3 3h3m10-6h3m-3 3h3m-3 3h3M9 4v3m3-3v3m3-3v3m-6 13v-3m3 3v-3m3 3v-3"/>
+          </svg>
+          <p class="tag">AI</p>
+          <h3>Architektura RAG</h3>
+          <p>Czy można wykryć halucynacje modeli AI w architekturze RAG bazując na geometrii?</p>
+        </a>
+        <article class="project-card"> <!-- nie ma odnośnika jak w pozostałych dlatego article -->
+          <svg class="project-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 10h2m-2 3h3"/>
+            <path d="M6 8h9l4 3v5H6z"/>
+            <path d="M15 8v3h4M9 16v1m7-1v1"/>
+            <circle cx="9" cy="17" r="2"/>
+            <circle cx="16" cy="17" r="2"/>
+          </svg>
+          <p class="tag">Sieci</p>
+          <h3>Warstwa transportowa</h3>
+          <p>Czy jesteśmy w stanie określić czy dany strumień danych w naszej sieci ma charakter wideokonferencyjny?</p>
+        </article>
+        <a class="project-card" href="https://github.com/wajwek/Programming_learning" target="_blank" rel="noopener noreferrer">
+          <svg class="project-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m8 8-4 4 4 4m8-8 4 4-4 4M14 5l-4 14"/></svg>
+          <p class="tag">Programowanie</p>
+          <h3>Nauka kodu</h3>
+          <p>Udoskonalam swoje zdolności programistyczne poprzez tworzenie małych programów, algorytmów i mini-projektów.</p>
+        </a>
+      </div>
+    </section>
+
+    <div class="tools-grid">
+      <section id="linki" class="section hidden">
+        <p class="eyebrow">Warto zobaczyć</p>
+        <h2>Linki</h2>
+        <aside class="links-panel" aria-label="Przydatne odnośniki"> <!-- treść poboczna -->
+          <a href="https://attack.mitre.org/" target="_blank" rel="noopener noreferrer">Cyber Kill Chain</a>
+          <a href="https://github.com/wajwek" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/maciej-wrzesi%C5%84ski-37b41639b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <ul id="custom-links-list" class="custom-links-list" aria-label="Dodane odnośniki"></ul>
+        </aside>
+        <div id="link-form" class="link-form" role="form">
+          <label for="link-name">Nazwa odnośnika</label>
+          <input id="link-name" name="link-name" type="text"
+            placeholder="Np. Dokumentacja MDN" required>
+
+          <label for="link-url">Adres URL</label>
+          <input id="link-url" name="link-url" type="url"
+            placeholder="https://example.com" required>
+
+          <p id="link-form-error" class="form-error" role="alert" aria-live="polite"></p>
+          <p id="link-form-status" class="form-status" role="status" aria-live="polite"></p>
+          <button id="add-link-btn" type="button">Dodaj odnośnik</button>
+        </div>
+      </section>
+      <aside class="widgets" aria-label="Miejsce na przyszłe widgety">
+        <div id="weather-box"><h2>Pogoda</h2></div>
+        <div id="calendar-box"><h2>Kalendarz</h2></div>
+      </aside>
+    </div>
+
+    <section id="kontakt" class="section contact">
+      <p class="eyebrow">Napisz do mnie</p>
+      <h2>Kontakt</h2>
+      <form action="#" method="post"> <!-- tworzy formularz, action określa adres na który ma być wysłany, post - sposób przesłania -->
+        <label for="name">Imię i nazwisko</label> <!-- tworzy etykietę w formularzu, kliknięcie ustawi focus w dobrym miejscu, for = name daje powiązanie do id=name-->
+        <input id="name" name="name" type="text" placeholder="Jan Kowalski" required>
+
+        <label for="email">Adres e-mail</label>
+        <input id="email" name="email" type="email" placeholder="jan@example.com" required>
+
+        <label for="message">Wiadomość</label>
+        <textarea id="message" name="message" rows="5" minlength="10" placeholder="Napisz wiadomość (minimum 10 znaków)" required></textarea>
+        <!-- text area tworzy wieloliniowe pole tekstowe -->
+        <button type="submit">Wyślij wiadomość</button> <!-- type=submit oznacza ze przycisk przesyła formularz-->
+      </form>
+    </section>
+  </main>
+  
+  <footer class="footer"> <!-- stopka -->
+    <p>&copy; 2026 Maciej Wrzesiński</p> <!-- symbol praw autorskich-->
+  </footer>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

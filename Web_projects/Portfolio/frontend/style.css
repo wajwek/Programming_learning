@@ -1,0 +1,456 @@
+:root { /* Zdefiniowanie zmiennych globalnych */
+  --dark: #123F36;
+  --sea-color: #2A6B5C;
+  --accent-color: #2A6B5C;
+  --light-beige: #E8DCC4;
+  --card-bg: #E8DCC4;
+  --text: #123F36;
+  --border: #C49A45;
+  --hover-beige: #C49A45;
+  --surface-text: #E8DCC4;
+  --link-color: #2A6B5C;
+  --space: 1rem; /* rem oznacza rozmiar podstawowej czcionki najczęściej 16px */
+}
+
+* { /* wszystkie elementy */
+  box-sizing: border-box; /* kontroluje szerokość włącznie z paddingiem i obramowaniem */
+}
+
+html { /* działanie strony */
+  scroll-behavior: smooth; /* płynne przejścia a nie przeskakiwanie */
+  scroll-padding-top: 5rem; /* odstęp od góry */
+}
+
+body { /* stylowanie całej witryny */
+  margin: 0; /* usuwa domyślny margines przeglądarki */
+  color: var(--text); /* kolor tekstru */
+  background-color: var(--light-beige);
+  font-family: Arial, sans-serif; /* jak nie pierwsze to drugie */
+  line-height: 1.6; /* ustawia linię tekstu na 1.6 wysokości czcionki */
+}
+
+body.dark {
+  --dark: #2E1C12;
+  --light-beige: #1A120B;
+  --card-bg: #3C2A21;
+  --text: #FCF1D0;
+  --border: #D5CEA3;
+  --hover-beige: #3C2A21;
+  --surface-text: #FCF1D0;
+  --link-color: #FCF1D0;
+  --accent-color: #D5CEA3;
+  --sea-color: #D5CEA3;
+  --navbar-bg: #2E1C12;
+  --project-hover:#291509;
+}
+
+.site-header { /* odwołanie do klasy */
+  position: fixed; /* przykleja nagłówek do konkretnej części ekranu, zostaje nawet po przewinięciu */
+  z-index: 2; /* ustala priorytet wyświetlania, im wyższy tym ważniejszy */
+  top: 0; /* przykleja nagłówek do samej góry */
+  width: 100%; /* zajmuje całą szerokość okna */
+  background: var(--navbar-bg, var(--dark));
+}
+
+.navbar {
+  display: flex; /* włącza układ Flexbox, dzięki temu można operować w obrębie jednego wiersza*/
+  align-items: center; /* wyrównuje elementy w pionie względem środka*/
+  justify-content: space-between; /* rozsuwa elementy maksymalnie na boki */
+  max-width: 1100px;
+  min-height: 4rem;
+  margin: 0 auto; /* usuwa margines dolny i górny, automatycznie usuwa marginesy po lewej i prawej stronie */
+  padding: 0 var(--space);
+}
+
+.identity,
+.nav-links a { /* wybiera każdy element 'a' znajdujący się w klasie identity i nav-links */
+  color: var(--surface-text);
+  text-decoration: none; /* us  uwa domyślne podkreślanie linków */
+}
+
+.identity-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.identity {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.theme-toggle {
+  display: flex;
+  width: 2.75rem;
+  height: 1.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0.2rem;
+  border: 1px solid var(--surface-text);
+  border-radius: 999px;
+  background: transparent;
+}
+
+.theme-toggle-thumb {
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 50%;
+  background: var(--surface-text);
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle[aria-checked="true"] .theme-toggle-thumb {
+  transform: translateX(1.2rem);
+}
+
+.nav-links {
+  display: flex; /* układa elementy w jednym wierszu */
+  gap: 0.5rem; /* dodaje odstęp */
+  margin: 0;
+  padding: 0;
+  list-style: none; /* usuwa kropki przed elementami */
+}
+
+.nav-links a {
+  display: block; /* link zachowuje się jak element blokowy */
+  padding: 0.5rem;
+}
+
+.nav-links a:hover, /* najechanie kursorem */
+.nav-links a:focus-visible, /* zaznaczenie klawiaturą */
+.identity:focus-visible, /* logo kiedy jest najechane klawiaturą */
+.theme-toggle:focus-visible { /* przełącznik kiedy jest zaznaczony klawiaturą */
+  color: var(--dark);
+  background: var(--light-beige);
+  outline: 2px solid var(--light-beige); /* dodaje obrys linią ciągłą */
+}
+
+body.dark .nav-links a:hover,
+body.dark .nav-links a:focus-visible {
+  color: var(--navbar-bg);
+  background: var(--surface-text);
+  outline: 2px solid var(--surface-text);
+}
+
+body.dark .nav-links a {
+  color: var(--surface-text);
+  background: var(--navbar-bg);
+}
+
+.theme-toggle:focus-visible {
+  outline-offset: 2px;
+}
+
+main {
+  width: min(100% - 2rem, 1100px); /* szerokość będzie mniejszą z dwóch wartości, zostawi margines na małych ekranach */
+  margin: 0 auto;
+}
+
+.hero {
+  display: flex;
+  min-height: 45vh; /* procent wysokości okna przeglądarki */
+  flex-direction: column; /* elementy wewnątrz są ukłądane pionowo */
+  justify-content: center; /* wyśrodkowuje w pionie */
+}
+
+.hero h1 {
+  max-width: 700px;
+  margin: 0;
+  font-size: clamp(2.5rem, 8vw, 5rem); /* responsywny rozmiar czcionki clamp(minimum, wartość preferowana, maksimum)*/
+  line-height: 1.1; /* vw - oznacza procent szerokości okna */
+}
+
+.eyebrow,
+.tag {
+  color: var(--accent-color);
+  font-weight: bold;
+  text-transform: uppercase; /* wyświetla wielkimi literami */
+}
+
+.section {
+  padding: 3rem 0;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.about {
+  display: grid; /* grid służy do tworzenai układów w wierszach i kolumnach */
+  grid-template-columns: 1fr 1fr; /* tworzy 2 kolumny o tej samej szerokości */
+  gap: 3rem;
+  align-items: center; /* wyrównuje zawartość do środka kolumny*/
+  border-top: 1px solid var(--border);
+}
+
+.profile-photo {
+  margin: 0;
+  text-align: center;
+}
+
+.profile-photo img {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  border: 2px solid var(--border);
+}
+
+.profile-photo figcaption {
+  margin-top: 0.5rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* tworzy 3 równe kolumny */
+  gap: var(--space);
+}
+
+#projekty { /* odwołanie do id=projekty */
+  border-top: 1px solid var(--border);
+}
+
+.project-card,
+.links-panel,
+.widgets > div { /* bezpośrednie dziecko, czt. div a już nie h2 po h2 jest dzieckiem div */
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
+
+.project-card {
+  display: block;
+  color: inherit; /* dziedziczy kolor po elemencie nadrzędnym */
+  text-decoration: none;
+  transition: transform 0.2s; /* transformacja trwa 0.2s - zapenia płynność */
+}
+
+.project-card:hover { 
+  transform: translateY(-5px); /* przesuwa kartę o 5px do góry*/
+  background: var(--project-hover, var(--hover-beige));
+}
+
+.project-card h3 {
+  margin: 0;
+}
+
+.project-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  fill: none; /* wyłącza wypełnienie */
+  stroke: var(--accent-color); /* ustawia kolor linii */
+  stroke-linecap: round; /* zaokrągla na końcach */
+  stroke-linejoin: round; /* zaokrągla łączenia */
+  stroke-width: 1.5; /* grubość linii*/
+}
+
+.tag {
+  margin-bottom: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* kolejność zgodna z html, czytaj pierwszy lement w pierwszej kolumnie itd. */
+  gap: 3rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.widgets {
+  grid-column: 2;
+}
+
+.links-panel {
+  display: flex;
+  flex-direction: column; /* układa linki pionowo */
+  gap: 0.75rem;
+}
+
+.links-panel a {
+  color: var(--link-color);
+}
+
+.links-panel a:hover,
+.links-panel a:focus-visible {
+  color: var(--surface-text);
+  background: var(--hover-beige);
+}
+
+.custom-links-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.custom-links-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.custom-links-list button {
+  margin: 0;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.link-form {
+  margin-top: 1.5rem;
+}
+
+.form-error {
+  min-height: 1.6em;
+  color: #9B2C2C;
+}
+
+.form-status {
+  min-height: 1.6em;
+  color: var(--sea-color);
+}
+
+.link-form input[aria-invalid="true"] {
+  border-color: #9B2C2C;
+  outline: 2px solid #9B2C2C;
+}
+
+.widgets {
+  display: grid;
+  gap: var(--space);
+  align-content: start;
+}
+
+.widgets h2 {
+  margin-bottom: 0.25rem;
+  font-size: 1.3rem;
+}
+
+.widgets p {
+  margin: 0;
+}
+
+.weather-details {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.weather-details p {
+  margin: 0;
+}
+
+.weather-error {
+  color: #9B2C2C;
+}
+
+.contact {
+  max-width: 700px;
+}
+
+form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+body.dark form {
+  color: var(--surface-text);
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  font: inherit;
+}
+
+body.dark form input,
+body.dark form textarea {
+  background: var(--card-bg);
+  color: var(--surface-text);
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--sea-color);
+  outline: 3px solid var(--border);
+}
+
+button {
+  width: max-content; /* szerokość dopasowywuje się do rozmiaru tekstu*/
+  margin-top: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  color: var(--surface-text);
+  background: var(--sea-color);
+  cursor: pointer; /* zmiana kursora*/
+  font: inherit;
+}
+
+body.dark button:not(.theme-toggle):not(.btn-close):not(.btn-link) {
+  background: var(--card-bg);
+  color: var(--surface-text);
+}
+
+button:hover,
+button:focus-visible {
+  background: var(--dark);
+  outline: 2px solid var(--sea-color);
+}
+
+body.dark button:not(.theme-toggle):not(.btn-close):not(.btn-link):hover,
+body.dark button:not(.theme-toggle):not(.btn-close):not(.btn-link):focus-visible {
+  background: var(--surface-text);
+  color: var(--navbar-bg);
+  outline: 2px solid var(--surface-text);
+}
+
+.footer {
+  padding: 1.5rem;
+  color: var(--surface-text);
+  background: var(--dark);
+  text-align: center;
+}
+
+@media (max-width: 700px) { /* wersja mobilna, wykona się gdy szerokość ekranu jest nie większa niż 700px */
+  .navbar {
+    align-items: flex-start; /* wyrównuje elementy do prawej strony */
+    flex-direction: column; /* układa logo i menu pionowo */
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .nav-links {
+    width: 100%;
+    flex-wrap: wrap; /* jeśli linki nie miszczą się w jednym wierszu mogą przejść do następnego */
+  }
+
+  .nav-links a {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .hero {
+    min-height: 100vh;
+  }
+
+  .about,
+  .tools-grid {
+    grid-template-columns: 1fr; /* zmiana układu z dwóch kolumn na jedną */
+    gap: 1rem;
+  }
+
+  .widgets {
+    grid-column: auto;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr; 
+  }
+}
